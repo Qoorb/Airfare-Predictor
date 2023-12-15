@@ -1,23 +1,33 @@
 # -*- coding: utf-8 -*-
 from app import app
-from flask import render_template,request
-import streamlit as st
-from app import db
-from app import analysis
-from models import Flights
+from flask import request
+from app import model
 
 @app.route("/api/data",methods=['GET'])
-def index():
-    current = str(request.args.get("current"))
-    target = str(request.args.get("target"))
-    print(current, target)
-    
-    flight = db.session.query(Flights).filter_by(departure_city = current,destination_city = target).first()
-    print(type(flight))
-    return {
-        "departure_city": flight.departure_city,
-        "destination_city": flight.destination_city,
-        "price": flight.price
+def get_predict():
+    airlines = ["IndiGo","Air India", "SpiceJet","Vistara"]
+    departure = str(request.args.get("dep"))
+    destination = str(request.args.get("dest"))
+    date = str(request.args.get("date"))
+    total_stops = 'non-stop'
+    info = 'no-info'
+    route = 1.0
+    predict = {
+        "departure city": departure,
+        "destination city": destination,
+        "date": date,
+        "prices":[]
     }
+    
+    for airline in airlines:
+        price = float(model.predict(airline, date, departure, destination, route, total_stops, info))
+        airline_price = {
+            "airline": airline,
+            "price": price
+        }
+        
+        predict["prices"].append(airline_price)
+
+    return predict
 
 
