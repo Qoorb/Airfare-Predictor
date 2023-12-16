@@ -6,7 +6,7 @@
 ### 1. Склонировать репозиторий, перейти в папку с проектом:
 `git@github.com:Qoorb/Airfare-Predictor.git`
 ### 2. Включить виртуальное окружение venv.
-`pip install -v venv .venv`
+`python -m venv .venv`
 ### 3. Установить необходимые зависимости:
 `pip install -r requirements.txt`
 ### 4. Открыть 2 окна терминала и запустить 2 локальных сервера:
