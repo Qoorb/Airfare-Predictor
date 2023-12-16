@@ -18,4 +18,5 @@ def predict(*args) -> float:
 
     prediction = model.predict(data_unseen)
     prediction = prediction[0]
+    
     return prediction

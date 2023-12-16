@@ -3,55 +3,73 @@ import numpy as np
 import pandas as pd
 import time
 import datetime
+import json
 import requests
 
+st.set_page_config(
+        page_title="С ветерком",
+        page_icon="🌬️",
+        layout="wide"
+    )
 
 def main():
 
-    st.markdown("# СЕРЕГА ПОЛЕТЕЛИ 🎈")
-    
-    col1, col2, col3 = st.columns(3, gap="small")
+    st.markdown("# С ветерком 🌬️")
+    st.sidebar.markdown("# Главная страница")
 
+    col1, col2, col3 = st.columns(3, gap="small")
     with col1:
         dep_city = st.selectbox(
-        'Укажите свой город отправления',
-        ('Banglore', 'Новосибирск'))
-
-        st.write('Город отправления:', dep_city)
+        'Город вылета',
+        ('Kolkata','Banglore', 'Delhi', 'Chennai', 'Mumbai'))
 
     with col2:
         dest_city = st.selectbox(
-            "Укажите город назначения:",
-            ('New Delhi','sfsfs')
+            "Город прилета:",
+            ('New Delhi', 'Banglore', 'Cochin', 'Kolkata', 'Delhi', 'Hyderabad')
         )
-        st.write('Город отправления:', dest_city)
-    if st.button("НАЖМИ МЕНЯ") : btn_on_click(dep_city, dest_city) 
-    with col3:
-        
-        sub_col1, sub_col2 = st.columns(2, gap="small")
-        
-        with sub_col1:
-            z1 = datetime.date.today()
-            departure_d = st.date_input("Дата вылета:", z1, format="DD.MM.YYYY")
-        
-        with sub_col2:
-            z2 = datetime.date.today()
-            arrival_d = st.date_input("Дата прилета:",z2, format="DD.MM.YYYY")
-
-            if arrival_d < departure_d:
-                z2 = z1
-                st.write("Все красиво")
-
     
+    cont = st.container()
+    with col1:
+        departure_d = st.date_input("Дата вылета:", value=None, format="YYYY.MM.DD")
+        
+        
+    if st.button("Найти рейсы"):
+        button_click(dep_city, dest_city, departure_d, cont)
 
 
-#http://127.0.0.1:5000/api/data?dep=Banglore&dest=New%20Delhi&airline=IndiGo&date=2024-03-14&info=no-info
-def btn_on_click(dep, dest):
-    url = "http://127.0.0.1:5000/api/data"
+
+def create_cost_info_field(index, field, date):
+
+    prim_col1, prim_col2 = st.columns(2, gap="small")
+
+    with prim_col1:
+        with st.form(f"Окно с билетом: {index}"):
+            
+            col1, col2 = st.columns(2, gap="medium")
+            with col1:
+                st.write(f"Дата вылета: {date}")
+
+                airline = field["airline"]
+                st.write(f"Авиакомпания: {airline}")
+                
+                cost = field['cost'] * 1.08
+                st.write(f"Цена: {cost} ₽")
+            
+            with col2:
+                st.form_submit_button(f"Купить билет с позицией: {index}")
+
+def button_click(city1, city2, date, cont):
+    
+    url = f'http://127.0.0.1:5000/v1/api/data?departure={city1}&destination={city2}&depdate={date}&info=no-info'
     response = requests.get(url)
     data = response.json()
-    print(data)
-    st.write(data["data"])
+    with cont:
+        counter = 1
+        for field in data['prices']:
+            create_cost_info_field(counter, field, date)
+            counter += 1
 
 if __name__ == "__main__":
     main()
+
