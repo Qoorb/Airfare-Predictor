@@ -2,16 +2,8 @@
 
 Это приложение было создано для предсказания цен на авиабилеты на основе данных о прошлых полетах.
 
-## Инструкция по запуску:
-### 1. Склонировать репозиторий, перейти в папку с проектом:
-`git@github.com:Qoorb/Airfare-Predictor.git`
-### 2. Включить виртуальное окружение venv.
-`python -m venv .venv`
-### 3. Установить необходимые зависимости:
-`pip install -r requirements.txt`
-### 4. Открыть 2 окна терминала и запустить 2 локальных сервера:
-`flask run` для запуска backend API\
-`streamlit run ./app/frontend.py` для запуска frontend сервера
+## Ссылка на приложение:
+https://airfare-predictor-dk7ve83xsn8afes4tb9iep.streamlit.app/#35fed479
 
 ## Описание
 
