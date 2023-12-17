@@ -61,7 +61,7 @@ def create_cost_info_field(index, field, date):
 
 def button_click(city1, city2, date, cont):
     
-    url = f'airfare-predictor-production-856d.up.railway.app/v1/api/data?departure={city1}&destination={city2}&depdate={date}&info=no-info'
+    url = f'airfare-predictor-production-856d.up.railway.app/v1/api/data?departure={city1}&destination={city2}&depdate={date}&info=no-info?'
     response = requests.get(url)
     data = response.json()
     with cont:
