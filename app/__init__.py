@@ -1,5 +1,4 @@
 from flask import Flask
-from app import routes
 
 
 app = Flask(__name__)
@@ -7,3 +6,4 @@ app = Flask(__name__)
 if __name__ == "__main__":
   app.run(port=5000)
   
+from app import routes
